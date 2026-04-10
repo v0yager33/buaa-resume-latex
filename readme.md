@@ -1,8 +1,8 @@
 # 北京航空航天大学 LaTeX 中文简历模板
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./docs/buaa_resume_example-images-0.jpg" width="48%" />
-  <img src="./docs/buaa_resume_example-images-1.jpg" width="48%" />
+  <img src="./docs/BUAA_CV_Template-1.png" width="48%" />
+  <img src="./docs/BUAA_CV_Template-2.png" width="48%" />
 </div>
 
 ## 简介
