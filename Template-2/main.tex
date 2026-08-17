@@ -1,0 +1,194 @@
+%%%% 原模板参考了https://www.wondercv.com/的模板
+\documentclass[11pt]{article}
+% disable indent globally
+\setlength{\parindent}{0pt}
+% some general improvements, defines the XeTeX logo
+\usepackage{xltxtra}
+\usepackage{bookmark}
+% use hyperlink for email and url
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{multicol}
+\usepackage{xcolor}
+%%%% 统一一种颜色，偏蓝色，用于section下划线和fontawesome
+\definecolor{CVBlue}{RGB}{45, 77, 152}
+%%% \widthof[]{} 用于特殊对齐是用到
+\usepackage{calc}
+%%%% 利用tikz来定位照片和学校Logo
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+% loading fonts
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\CJKsetecglue{} %% 取消中文与数字之间间隙
+%%%%% 字体需要自己下载安装，注意版权问题，这两种字体应该比较好看，英文Helvetica，中文方正兰亭黑，也是有多种版本，自己试试哪些好看。参考了https://www.wondercv.com/的模板
+%%%%% windows系统好像需要先安装字体，之后下面语句就够了
+%Main document font
+%\setmainfont[
+%  BoldFont = HelveticaNeueLTPro-Md.otf ,
+%]{HelveticaNeueLTPro-Roman.otf}
+%
+%\setCJKmainfont[
+%BoldFont=Pro_GB18030 DemiBold.otf,
+%]{Pro_GB18030.otf}
+%%%%% 字体需要自己下载安装，注意版权问题
+%%%%% linux系统只需要字体路径就行了，如下
+% % Main document font
+\setmainfont[
+Path = Font/,
+  Extension = .otf ,
+  BoldFont = HelveticaNeueLTPro-Md.otf ,
+]{HelveticaNeueLTPro-Roman.otf}
+\setCJKmainfont[
+Path = Font/,
+  Extension = .otf ,
+BoldFont=ProGB18030 DemiBold.otf,
+]{ProGB18030.otf}
+%%%%% 定义更漂亮的“C++”，参考https://tex.stackexchange.com/questions/4302/prettiest-way-to-typeset-c-cplusplus 
+%%%%% 貌似跟具体字体大小有关，需要调下参数，我测试感觉下面的比较好看
+\usepackage{relsize}
+\usepackage{xspace}
+\protected\def\Cpp{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.28ex}{\relsize{-1}++}}\xspace} 
+% use fontawesome
+\usepackage{fontawesome}
+%\newfontfamily{\FA}{[FontAwesome.otf]}
+\usepackage[
+	a4paper,
+	left=1.2cm,
+	right=1.2cm,
+	top=1.0cm,
+	bottom=1cm,
+	nohead
+]{geometry}
+\renewcommand{\baselinestretch}{1.2} %定义行间距1.2
+\usepackage{titlesec}
+\usepackage{enumitem}
+\setlist{noitemsep} % removes spacing from items but leaves space around the whole list
+%\setlist{nosep} % removes all vertical spacing within and around the list
+\setlist[itemize]{topsep=0.25em, leftmargin=*}
+\setlist[enumerate]{topsep=0.25em, leftmargin=*}
+\titleformat{\section}         % Customise the \section command 
+  {\large\bfseries\raggedright} % Make the \section headers large (\Large),
+                               % small capitals (\scshape) and left aligned (\raggedright)
+  {}{0em}                      % Can be used to give a prefix to all sections, like 'Section ...'
+  {}                           % Can be used to insert code before the heading
+  [{\color{CVBlue}\titlerule}]                 % Inserts a horizontal line after the heading
+\titlespacing*{\section}{0cm}{*1.6}{*1.2}
+\usepackage{siunitx}
+\usepackage{amssymb}
+%\xeCJKsetup{CJKspace=true}
+%\xeCJKDeclareCharClass{CJK}{`0 -> `9}    % 设置 0-9 以 CJK 字体输出
+%\normalspacedchars{0,1,2,3,4,5,6,7,8,9} % 0-9 的字符类被还原
+%%%% ---------- 常用宏 ----------
+%%%% \cvsection{图标}{标题}：图标统一按 \faGraduationCap 的宽度居中，各 section 标题左侧齐平
+\newcommand{\cvsection}[2]{%
+  \section{\texorpdfstring{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}#1}\ #2}{#2}}}
+%%%% \cventry{学校/公司/项目名}{专业/岗位/角色}{时间}：时间自动顶到最右侧
+\newcommand{\cventry}[3]{{\parfillskip=0pt\relax\noindent\textbf{#1}\quad #2\hfill#3\par}}
+%%%% \cvtag{关键词}：技术栈标签，想强调技术关键词时用，如 \cvtag{Redis}；不喜欢可以不用
+\definecolor{CVTagBG}{RGB}{229,239,248}
+\newcommand{\cvtag}[1]{\colorbox{CVTagBG}{\small #1}}
+
+
+\begin{document}
+
+\pagenumbering{gobble} % suppress displaying page number
+%%%% 利用tikz来定位照片，部分招聘单位可能需要“以貌取人”
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor = north east] at ($(current page.north east)+(-1cm,-1.2cm)$) {\includegraphics[height=2.8cm]{img/avatar.png}};
+\end{tikzpicture}%
+%%%% 利用tikz来定位学校Logo，这里只在第一页显示，如果需要每页都有，可以考虑在页眉、页脚或者background中加入，不过简历也就一两页，无所谓了
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor = north west] at ($(current page.north west)+(0.2cm,-0.2cm)$) {\includegraphics[height=1.1cm]{img/BUAA.png}};
+\end{tikzpicture}%
+%%%% 利用tikz来定位页脚栏，电子版简历使用，黑白纸质打印效果可能并不好。这里只在第一页显示，如果需要每页都有，页脚或者background中加入。
+\begin{tikzpicture}[remember picture, overlay] 
+    \node[anchor = south,fill=CVBlue,draw=none,minimum width=\paperwidth,minimum height=1.6em,align=center,font=\footnotesize,text=white] at ($(current page.south)$) 
+    {\faGithubAlt \ \href{https://github.com/v}{https://github.com/v0yager}\qquad
+        \faRssSquare \ \href{https://v0yager33.github.io}{https://v0yager33.github.io} };
+\end{tikzpicture}
+
+%tikzpicture环境很敏感，注释周围的空格、空行都会引起水平距离或垂直距离的变化，
+%
+\centerline{\LARGE\bfseries{你的名字}}
+
+%%%% 求职意向写明“岗位 + 技术方向”，让筛简历的人一眼看到岗位匹配度
+\centerline{\normalsize{意向岗位：后端开发工程师 \quad 期望城市：北京 / 杭州 \quad 到岗时间：随时}}
+
+%%%% 联系方式一行放下，GitHub / 博客务必确认链接可以打开
+\centerline{\normalsize{
+		\faPhone \ 13X XXXX XXXX \quad
+		\faEnvelopeO \ \href{mailto:v0yager33@buaa.edu.cn}{v0yager33@buaa.edu.cn}}}
+        
+\cvsection{\faGraduationCap}{教育背景}
+
+\cventry{北京航空航天大学}{硕士 \quad 控制科学与工程}{202X年9月 -- 至今（预计202X年6月毕业）}
+
+\quad 自动化科学与电气工程学院 \quad 导师：XXX 教授 \quad GPA：3.9/4.0（专业排名 1/100）
+
+\cventry{北京航空航天大学}{本科 \quad 智能科学与技术}{20XX年9月 -- 20XX年6月}
+
+\quad 自动化科学与电气工程学院 \quad GPA：3.8/4.0（专业排名 5/120）\quad 英语：四级 650，六级 630
+
+\cvsection{\faBriefcase}{实习经历}
+
+\cventry{字节跳动}{AML团队丨后端开发实习生}{202X年6月 -- 202X年9月}
+\begin{itemize}[topsep=0em]
+	\item 基于 Go 重构鉴权模块，收敛历史冗余逻辑，代码量减少 30\%
+	\item 支撑大促峰值 10 万 QPS，P99 延迟降低 20\%；技术栈：Golang、Redis、Kubernetes
+\end{itemize}
+
+\cventry{腾讯科技有限公司}{微信团队WXG丨WeLM丨算法实习生}{202X年12月 -- 202X年3月}
+\begin{itemize}[topsep=0em]
+	\item 设计大模型预训练数据的自动化清洗与去重流水线，产出高质量数据 100 万条以上
+	\item 模型收敛速度提升 15\%；技术栈：Python、PyTorch、Spark
+\end{itemize}
+
+\cvsection{\faCode}{项目经历}
+
+\cventry{基于在线文档的协作考试系统}{核心开发者}{202X年9月 -- 202X年12月}
+\begin{itemize}[topsep=0em]
+	\item 用 WebSocket 同步文档、OT 算法解决编辑冲突，Redis 缓存加速自动阅卷
+	\item 支持 200 人同时在线考试无卡顿，已在院内高级语言程序设计试点使用
+\end{itemize}
+
+\cventry{复杂光照下的目标检测算法}{算法负责人}{202X年3月 -- 202X年6月}
+\begin{itemize}[topsep=0em]
+	\item 面向无人机航拍场景改进 YOLO 模型，引入注意力模块并重设计损失函数
+	\item mAP 提升 3.5\%，成果整理成论文投稿
+\end{itemize}
+
+\cvsection{\faFlask}{科研成果}
+\begin{itemize}
+	\item \textbf{你的名字}, 导师姓名. \textit{This is One of Your Papers.} \textbf{Conference A}（CCF-A 类会议），202X
+	\item 发明专利《一种 XXX 的方法及装置》，第一发明人，公开号 CN10XXXXXXXXA
+\end{itemize}
+
+\cvsection{\faTrophy}{竞赛与荣誉}
+\begin{itemize}
+	\item 竞赛类：北航第 3X 届“冯如杯”科技竞赛\textbf{一等奖}（团队负责人），中国大学生计算机设计大赛\textbf{国家二等奖}
+	\item 奖学金类：\textbf{沈元奖章}，\textbf{国家奖学金}（X次），\textbf{学业一等奖学金}（X次），\textbf{新生一等奖学金}
+	\item 荣誉称号：\textbf{优秀毕业生}，\textbf{学业先进个人}，\textbf{优秀共青团员}
+\end{itemize}
+
+\cvsection{\faUsers}{学生工作}
+\begin{itemize}
+	\item 校研究生会主席团成员，统筹 6 个部门例会与考核，主办“学术文化节”
+	\item 202X 级班团支部书记，组织理论学习与班级活动
+\end{itemize}
+
+\cvsection{\faWrench}{技能特长}
+% increase linespacing [parsep=0.5ex]
+\begin{itemize}[parsep=0.5ex]
+	\item 编程语言：Python $\approx$ \Cpp > Go > Java；熟悉 Linux 开发环境与 Git 协作流程
+	\item 后端与工程：Spring Boot、MySQL、Redis、Docker、Kubernetes、CI/CD
+	\item 其他工具：PyTorch、Matlab / Simulink、\LaTeX{} 排版
+\end{itemize}
+
+\cvsection{\faTags}{其他}
+爱好特长：组乐队
+
+\end{document}
